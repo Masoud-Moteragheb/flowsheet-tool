@@ -67,22 +67,30 @@ export function ResultsPanel({
                   <th className="px-2 py-1 text-left">To</th>
                   <th className="px-2 py-1 text-right">Flowrate (t/h)</th>
                   <th className="px-2 py-1 text-right">Grade (%)</th>
+                  <th className="px-2 py-1 text-right">Metal (t/h)</th>
                 </tr>
               </thead>
               <tbody>
-                {result.streams.map((s) => (
-                  <tr key={s.id} className="border-t">
-                    <td className="px-2 py-1">{s.id}</td>
-                    <td className="px-2 py-1">{s.from_unit}</td>
-                    <td className="px-2 py-1">{s.to_unit}</td>
-                    <td className="px-2 py-1 text-right">
-                      {s.flowrate.toFixed(2)}
-                    </td>
-                    <td className="px-2 py-1 text-right">
-                      {s.grade.toFixed(2)}
-                    </td>
-                  </tr>
-                ))}
+                {result.streams.map((s) => {
+                  const metalTh = (s.flowrate * s.grade) / 100;
+
+                  return (
+                    <tr key={s.id} className="border-t">
+                      <td className="px-2 py-1">{s.id}</td>
+                      <td className="px-2 py-1">{s.from_unit}</td>
+                      <td className="px-2 py-1">{s.to_unit}</td>
+                      <td className="px-2 py-1 text-right">
+                        {s.flowrate.toFixed(2)}
+                      </td>
+                      <td className="px-2 py-1 text-right">
+                        {s.grade.toFixed(2)}
+                      </td>
+                      <td className="px-2 py-1 text-right">
+                        {metalTh.toFixed(2)}
+                      </td>
+                    </tr>
+                  );
+                })}
               </tbody>
             </table>
           </div>

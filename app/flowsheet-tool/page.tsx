@@ -4,7 +4,7 @@ import { validateFlowsheetModel } from "@/utils/validateFlowsheetModel";
 import { ResultsPanel } from "@/components/ResultsPanel";
 import { buildFlowsheetModel } from "@/utils/buildFlowsheetModel";
 import type { SimulationResult } from "@/types/simulation";
-import { useCallback, useState } from "react";
+import { useCallback, useRef, useState } from "react";
 import {
   ReactFlowProvider,
   useNodesState,
@@ -12,6 +12,7 @@ import {
   addEdge,
   Connection,
   Edge,
+  MarkerType,
 } from "reactflow";
 
 import { BlockLibraryPanel } from "@/components/BlockLibraryPanel";
@@ -31,6 +32,9 @@ function FlowsheetToolInner() {
   // نودها و یال‌ها
   const [nodes, setNodes, onNodesChange] = useNodesState<FlowsheetNode>([]);
   const [edges, setEdges, onEdgesChange] = useEdgesState<Edge>([]);
+
+  // ✅ شمارنده‌ی استریم‌ها برای ساخت S1, S2, ...
+  const streamCounterRef = useRef(1);
 
   // نود انتخاب‌شده (برای highlight اگر لازم شد)
   const [selectedNodeId, setSelectedNodeId] = useState<string | null>(null);
@@ -61,10 +65,24 @@ function FlowsheetToolInner() {
     setEditNode(null);
   }, []);
 
-  // اتصال نودها
+  // ✅ اتصال نودها: ساخت Edge با id/label = S1, S2, ...
   const onConnect = useCallback(
     (connection: Connection) => {
-      setEdges((eds) => addEdge({ ...connection, animated: true }, eds));
+      const streamId = `S${streamCounterRef.current++}`;
+
+      setEdges((eds) =>
+        addEdge(
+          {
+            ...connection,
+            id: streamId,
+            label: streamId,
+            type: "labeled",
+            animated: true,
+            markerEnd: { type: MarkerType.ArrowClosed },
+          },
+          eds
+        )
+      );
     },
     [setEdges]
   );
@@ -165,6 +183,9 @@ function FlowsheetToolInner() {
     setSelectedNodeId(null);
     setEditNode(null);
     setSimulationResult(null);
+
+    // ✅ reset شمارنده تا دوباره از S1 شروع شود
+    streamCounterRef.current = 1;
   }, [setNodes, setEdges]);
 
   // اجرای شبیه‌سازی

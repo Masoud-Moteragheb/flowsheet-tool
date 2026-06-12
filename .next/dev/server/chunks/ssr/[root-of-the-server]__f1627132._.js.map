@@ -1,6 +1,0 @@
-{
-  "version": 3,
-  "sources": [],
-  "sections": [
-    {"offset": {"line": 14, "column": 0}, "map": {"version":3,"sources":["file:///Users/masoud/My%20Data/mine-process-designer/flowsheet-tool/app/page.tsx"],"sourcesContent":["export default function HomePage() {\r\n  return (\r\n    <main className=\"min-h-screen flex flex-col items-center justify-center gap-4\">\r\n      <h1 className=\"text-3xl font-bold\">Educational Flowsheet Modeling Tool</h1>\r\n      <p className=\"text-gray-600\">\r\n        An intelligent visual tool for copper and zinc processing flowsheets.\r\n      </p>\r\n      <a\r\n        href=\"/flowsheet-tool\"\r\n        className=\"px-4 py-2 rounded-lg border hover:bg-gray-100\"\r\n      >\r\n        Go to Flowsheet Tool\r\n      </a>\r\n    </main>\r\n  );\r\n}\r\n"],"names":[],"mappings":";;;;;;AAAe,SAAS;IACtB,qBACE,8OAAC;QAAK,WAAU;;0BACd,8OAAC;gBAAG,WAAU;0BAAqB;;;;;;0BACnC,8OAAC;gBAAE,WAAU;0BAAgB;;;;;;0BAG7B,8OAAC;gBACC,MAAK;gBACL,WAAU;0BACX;;;;;;;;;;;;AAKP"}}]
-}

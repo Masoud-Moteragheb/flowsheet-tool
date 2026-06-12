@@ -6,15 +6,19 @@ import ReactFlow, {
   Background,
   Controls,
   MiniMap,
-  Node,
-  Edge,
-  OnNodesChange,
-  OnEdgesChange,
-  Connection,
+  type Edge,
+  type OnNodesChange,
+  type OnEdgesChange,
+  type Connection,
   Handle,
   Position,
-  NodeTypes,
-  NodeProps,
+  type NodeTypes,
+  type NodeProps,
+  type Node,
+  BaseEdge,
+  EdgeLabelRenderer,
+  getBezierPath,
+  type EdgeProps,
 } from "reactflow";
 
 import type { FlowsheetNode } from "@/types/units";
@@ -33,6 +37,53 @@ interface FlowsheetCanvasProps {
   onNodeDoubleClick?: (node: FlowsheetNode) => void;
 }
 
+// ✅ Edge سفارشی برای نمایش label (مثل S1, S2, ...)
+function LabeledEdge({
+  sourceX,
+  sourceY,
+  targetX,
+  targetY,
+  sourcePosition,
+  targetPosition,
+  style,
+  markerEnd,
+  label,
+}: EdgeProps) {
+  const [edgePath, labelX, labelY] = getBezierPath({
+    sourceX,
+    sourceY,
+    targetX,
+    targetY,
+    sourcePosition,
+    targetPosition,
+  });
+
+  return (
+    <>
+      <BaseEdge path={edgePath} markerEnd={markerEnd} style={style} />
+      {label && (
+        <EdgeLabelRenderer>
+          <div
+            style={{
+              position: "absolute",
+              transform: `translate(-50%, -50%) translate(${labelX}px, ${labelY}px)`,
+              background: "#ffffff",
+              border: "1px solid #cbd5e1",
+              borderRadius: 8,
+              padding: "2px 6px",
+              fontSize: 11,
+              color: "#0f172a",
+              pointerEvents: "none",
+            }}
+          >
+            {label}
+          </div>
+        </EdgeLabelRenderer>
+      )}
+    </>
+  );
+}
+
 // 🔹 نود سفارشی برای واحدهای فرآیندی (type: "unit")
 function UnitNode({ data, selected }: NodeProps<any>) {
   const label: string = data?.label ?? "";
@@ -43,6 +94,7 @@ function UnitNode({ data, selected }: NodeProps<any>) {
     typeof data?.parameters?.recovery === "number"
       ? data.parameters.recovery
       : 1;
+
   const splitRatio =
     typeof data?.parameters?.split_ratio === "number"
       ? data.parameters.split_ratio
@@ -137,6 +189,11 @@ const nodeTypes: NodeTypes = {
   unit: UnitNode,
 };
 
+// ✅ مپ نوع edge ها
+const edgeTypes = {
+  labeled: LabeledEdge,
+};
+
 export function FlowsheetCanvas({
   nodes,
   edges,
@@ -151,7 +208,7 @@ export function FlowsheetCanvas({
   return (
     <div className="w-full h-full" onDrop={onDrop} onDragOver={onDragOver}>
       <ReactFlow
-        nodes={nodes as Node[]}
+        nodes={nodes as unknown as Node[]}
         edges={edges}
         onNodesChange={onNodesChange}
         onEdgesChange={onEdgesChange}
@@ -163,6 +220,7 @@ export function FlowsheetCanvas({
             : undefined
         }
         nodeTypes={nodeTypes}
+        edgeTypes={edgeTypes}
         fitView
       >
         <Background gap={16} size={1} />

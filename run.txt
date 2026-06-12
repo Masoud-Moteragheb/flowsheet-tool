@@ -1,0 +1,10 @@
+Backend
+
+cd backend   
+source .venv/bin/back/activate 
+uvicorn app.main:app --reload  
+
+
+Front
+
+npm run dev

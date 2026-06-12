@@ -29,12 +29,13 @@ export function buildFlowsheetModel({
     },
   }));
 
-  const streams: SimulationStream[] = edges.map((edge,index) => ({
-    id: `S${index + 1}`,
+  const streams: SimulationStream[] = edges.map((edge, index) => ({
+    // ✅ یکدست با Canvas: اگر edge.id موجود است همان را می‌فرستیم
+    // ✅ fallback برای edgeهای قدیمی/بدون id
+    id: edge.id || `S${index + 1}`,
     from_unit: edge.source,
     to_unit: edge.target ?? "",
   }));
-
 
   return {
     metal,
