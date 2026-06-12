@@ -107,7 +107,7 @@ function FlowsheetToolInner() {
       } catch {
         return;
       }
-
+      if (!payload) return;
       const unitId = payload.type;
       const bounds = (event.target as HTMLDivElement).getBoundingClientRect();
 
