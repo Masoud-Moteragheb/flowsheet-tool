@@ -29,6 +29,8 @@ function FlowsheetToolInner() {
 
   const [selectedMetal, setSelectedMetal] = useState<MetalType>("Cu");
 
+  const API_URL =process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000";
+
   // نودها و یال‌ها
   const [nodes, setNodes, onNodesChange] = useNodesState<FlowsheetNode>([]);
   const [edges, setEdges, onEdgesChange] = useEdgesState<Edge>([]);
@@ -212,7 +214,7 @@ function FlowsheetToolInner() {
     setIsSimulating(true);
 
     try {
-      const response = await fetch("http://127.0.0.1:8000/simulate", {
+      const response = await fetch(`${API_URL}/simulate`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -243,7 +245,7 @@ function FlowsheetToolInner() {
         overall_recovery: 0,
         messages: [
           "Could not connect to the simulation server.",
-          "Make sure FastAPI is running on http://127.0.0.1:8000.",
+          `Make sure FastAPI is running at ${API_URL}.`,
         ],
       });
     } finally {
