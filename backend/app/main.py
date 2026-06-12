@@ -1,5 +1,6 @@
 from collections import deque
 from typing import Dict, List
+from fastapi.middleware.cors import CORSMiddleware
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
@@ -13,6 +14,17 @@ from .models import (
 app = FastAPI(
     title="Educational Flowsheet Simulation API",
     version="0.4.0",
+)
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=[
+        "https://flowsheet-tool-1oz8.vercel.app",
+        "http://localhost:3000",
+    ],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
 
 origins = [
