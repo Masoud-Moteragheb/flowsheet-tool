@@ -19,8 +19,8 @@ export function mockSimulate(model: FlowsheetModel): SimulationResult {
 
     return {
       id: s.id,
-      from: s.from,
-      to: s.to,
+      from_unit: s.from_unit,
+      to_unit: s.to_unit,
       flowrate,
       grade,
     };
@@ -36,7 +36,7 @@ export function mockSimulate(model: FlowsheetModel): SimulationResult {
 
   return {
     streams,
-    overallRecovery,
+    overall_recovery: overallRecovery,
     messages,
   };
 }

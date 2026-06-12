@@ -23,13 +23,14 @@ import ReactFlow, {
 
 import type { FlowsheetNode } from "@/types/units";
 
+
 import "reactflow/dist/style.css";
 
 interface FlowsheetCanvasProps {
   nodes: FlowsheetNode[];
   edges: Edge[];
-  onNodesChange: OnNodesChange<FlowsheetNode>;
-  onEdgesChange: OnEdgesChange<Edge>;
+  onNodesChange: OnNodesChange;
+  onEdgesChange: OnEdgesChange;
   onConnect: (connection: Connection) => void;
   onDrop: (event: React.DragEvent) => void;
   onDragOver: (event: React.DragEvent) => void;

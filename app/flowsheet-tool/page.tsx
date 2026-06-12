@@ -29,7 +29,7 @@ function FlowsheetToolInner() {
 
   const [selectedMetal, setSelectedMetal] = useState<MetalType>("Cu");
 
-  const API_URL =process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000";
+  const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000";
 
   // نودها و یال‌ها
   const [nodes, setNodes, onNodesChange] = useNodesState<FlowsheetNode>([]);
@@ -119,7 +119,7 @@ function FlowsheetToolInner() {
       const newNode = createNodeFromUnit(unitId, position);
       if (!newNode) return;
 
-      setNodes((nds) => nds.concat(newNode));
+      setNodes((nds) => [...nds, newNode as any]);
     },
     [setNodes]
   );
@@ -195,7 +195,7 @@ function FlowsheetToolInner() {
     const model = buildFlowsheetModel({
       metal: selectedMetal,
       feed,
-      nodes,
+      nodes: nodes as any,
       edges,
     });
 
@@ -336,8 +336,8 @@ function FlowsheetToolInner() {
 
         <section style={{ flex: 1, backgroundColor: "#f1f5f9" }}>
           <FlowsheetCanvas
-            nodes={nodes}
-            edges={edges}
+            nodes={nodes as any}
+            edges={edges as any}
             onNodesChange={onNodesChange}
             onEdgesChange={onEdgesChange}
             onConnect={onConnect}
